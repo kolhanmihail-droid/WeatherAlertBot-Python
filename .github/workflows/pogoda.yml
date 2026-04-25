@@ -2,20 +2,18 @@ name: Raport Pogodowy co 3h
 
 on:
   schedule:
-    # Składnia CRON: Minuta, Godzina, Dzień, Miesiąc, Dzień tygodnia
-    # '0 */3 * * *' oznacza: o każdej pełnej godzinie podzielnej przez 3
     - cron: '0 */3 * * *'
-  workflow_dispatch: # Pozwala odpalić bota ręcznie przyciskiem na GitHubie
+  workflow_dispatch:
 
 jobs:
   run-bot:
     runs-on: ubuntu-latest
     steps:
       - name: Pobieranie kodu repozytorium
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4 # Zaktualizowano z v3
 
       - name: Instalacja Pythona
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5 # Zaktualizowano z v4
         with:
           python-version: '3.11'
 
@@ -24,7 +22,6 @@ jobs:
 
       - name: Uruchomienie bota
         env:
-          # Tu łączymy Sekrety z GitHuba ze zmiennymi, których szuka Twój Python
           API_KEY: ${{ secrets.API_KEY }}
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
           CITY: ${{ secrets.CITY }}
