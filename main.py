@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 def get_weather():
+
     api_key = os.getenv('API_KEY')
     city = os.getenv('CITY')
 
@@ -21,9 +22,17 @@ def get_weather():
         data = response.json()
 
         if data['cod'] == 200:
-            temperature = data['main']['temp']
+            temperature = round(data['main']['temp'], 1)
             description = data['weather'][0]['description']
-            print(f"{city.upper()} - {temperature} - {description}")
+            print(f"--- {city.upper()} ---")
+            print(f"Temperature: {temperature}°C")
+            print(f"Description: {description.capitalize()}")
+            if temperature > 30:
+                print("🔥 Alert: Ekstremalny upał!")
+            elif temperature < 0:
+                print("❄️ Alert: Mróz, uważaj na drodze!")
+            else:
+                print("🌤️ Pogoda jest w sam raz.")
         else:
             print('Error of the server')
     except Exception as e:
