@@ -1,14 +1,15 @@
 import os
-import time
 from send import send_to_discord
 import requests
 from dotenv import load_dotenv
+
 load_dotenv()
 
 def get_weather():
 
     api_key = os.getenv('API_KEY')
     city = os.getenv('CITY')
+    webhook_url = os.getenv("DISCORD_WEBHOOK_URL")
 
 
     if not api_key:
@@ -25,8 +26,8 @@ def get_weather():
             temperature = round(data['main']['temp'], 1)
             description = data['weather'][0]['description']
             full_msg = f"🌤️ **Raport pogodowy dla: {city.upper()}**\n"
-            full_msg += f"Temperatura: {temp}°C\n"
-            full_msg += f"Warunki: {desc.capitalize()}\n"
+            full_msg += f"Temperatura: {temperature}°C\n"
+            full_msg += f"Warunki: {description.capitalize()}\n"
 
             # Twoja logika alertów
             if temperature > 30:
