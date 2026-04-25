@@ -1,6 +1,6 @@
 import os
 import time
-
+from send import send_to_discord
 import requests
 from dotenv import load_dotenv
 load_dotenv()
@@ -24,15 +24,19 @@ def get_weather():
         if data['cod'] == 200:
             temperature = round(data['main']['temp'], 1)
             description = data['weather'][0]['description']
-            print(f"--- {city.upper()} ---")
-            print(f"Temperature: {temperature}°C")
-            print(f"Description: {description.capitalize()}")
+            full_msg = f"🌤️ **Raport pogodowy dla: {city.upper()}**\n"
+            full_msg += f"Temperatura: {temp}°C\n"
+            full_msg += f"Warunki: {desc.capitalize()}\n"
+
+            # Twoja logika alertów
             if temperature > 30:
-                print("🔥 Alert: Ekstremalny upał!")
+                full_msg += "🔥 **UWAGA:** Możliwy upał, lepiej zostać w domu!"
             elif temperature < 0:
-                print("❄️ Alert: Mróz, uważaj na drodze!")
-            else:
-                print("🌤️ Pogoda jest w sam raz.")
+                full_msg += "❄️ **UWAGA:** Jest zimno, ubierz się ciepło!"
+
+            # WYSYŁAMY!
+            print(f"Próba wysłania: {full_msg}")
+            send_to_discord(full_msg)
         else:
             print('Error of the server')
     except Exception as e:
