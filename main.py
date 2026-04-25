@@ -39,7 +39,7 @@ def get_weather():
             print(f"Próba wysłania: {full_msg}")
             send_to_discord(full_msg)
         else:
-            print('Error of the server')
+            print(f"Błąd API! Kod: {data.get('cod')}, Wiadomość: {data.get('message')}")
     except Exception as e:
         print(f"Connection error: {e}")
 
